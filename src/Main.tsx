@@ -1,10 +1,12 @@
 import { Box, Grid, Stack } from '@mui/material'
+import { useAtomValue } from 'jotai'
 import React, { useState } from 'react'
 
 import { Controls } from './Controls'
 import { Footer } from './Footer'
 import { PhaseGraph } from './PhaseGraph'
 import { Scene } from './Scene'
+import { hideGraphStore } from './stores'
 import { usePhaseGraphEventHandlers } from './usePhaseGraphEventHandlers'
 import { useSceneEventHandlers } from './useSceneEventHandlers'
 import { useStateAnimation } from './useStateAnimation'
@@ -13,6 +15,7 @@ export const Main: React.FC = () => {
   const [graph, setGraph] = useState<HTMLDivElement | null>(null)
   const phaseGraphEventHandlers = usePhaseGraphEventHandlers({ element: graph })
   const sceneEventHandlers = useSceneEventHandlers()
+  const hideGraph = useAtomValue(hideGraphStore)
 
   useStateAnimation()
 
@@ -31,7 +34,7 @@ export const Main: React.FC = () => {
         <Grid item xs={12}>
           <Scene {...sceneEventHandlers} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} display={hideGraph ? 'none' : 'flex'}>
           <PhaseGraph ref={setGraph} {...phaseGraphEventHandlers} />
         </Grid>
       </Grid>

@@ -4,12 +4,18 @@ import React, { useCallback } from 'react'
 
 import { SliderControl } from './SliderControl'
 import { SwitchControl } from './SwitchControl'
-import { colorizeStore, paramsStore, pointerVelocityStore } from './stores'
+import {
+  colorizeStore,
+  hideGraphStore,
+  paramsStore,
+  pointerVelocityStore
+} from './stores'
 
 export const Controls: React.FC = React.memo(() => {
   const [params, setParams] = useAtom(paramsStore)
   const [colorize, setColorize] = useAtom(colorizeStore)
   const [pointerVelocity, setPointerVelocity] = useAtom(pointerVelocityStore)
+  const [hideGraph, setHideGraph] = useAtom(hideGraphStore)
 
   const handleSliderChange = useCallback(
     (event: any, value: number | number[]) => {
@@ -30,11 +36,12 @@ export const Controls: React.FC = React.memo(() => {
     (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
       const events = {
         colorize: setColorize,
-        pointerVelocity: setPointerVelocity
+        pointerVelocity: setPointerVelocity,
+        hideGraph: setHideGraph
       }
       events[event.target.name as keyof typeof events]?.(checked)
     },
-    [setColorize, setPointerVelocity]
+    [setColorize, setPointerVelocity, setHideGraph]
   )
 
   const theme = useTheme()
@@ -84,6 +91,13 @@ export const Controls: React.FC = React.memo(() => {
       name='pointerVelocity'
       label='Pointer Velocity'
       checked={pointerVelocity}
+      onChange={handleSwitchChange}
+    />,
+    <SwitchControl
+      key='hideGraph'
+      name='hideGraph'
+      label='Hide Graph'
+      checked={hideGraph}
       onChange={handleSwitchChange}
     />
   ]

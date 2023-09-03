@@ -12,6 +12,7 @@ export const paramsStore = atom<Params>({
 
 export const colorizeStore = atom(false)
 export const pointerVelocityStore = atom(false)
+export const hideGraphStore = atom(false)
 
 export const derivativeStore = atom(get =>
   configureDerivative(get(paramsStore))
